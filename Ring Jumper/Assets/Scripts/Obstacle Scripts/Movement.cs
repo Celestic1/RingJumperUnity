@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour {
-
+public class Movement : MonoBehaviour
+{
+   
     public float speed = 90f;
 
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Update()
+    {
         transform.Rotate(Vector3.forward * speed * Time.deltaTime);
     }
 }

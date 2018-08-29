@@ -14,7 +14,7 @@ public class Obstacle : MonoBehaviour {
     {
         if(player.activeColor != this.tag)
         {
-            print("Game Over");
+            player.GameOver();
         }
     }
 

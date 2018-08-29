@@ -20,7 +20,7 @@ public class Stripes : MonoBehaviour {
 		//Check if we are moving to the right
         if((speed / Mathf.Abs(speed)) == 1)
         {
-            for(int i = 0; i < stripes.Length; i++)
+            for(int i = 0; i < 8; i++)
             {
                 stripes[i].Translate(new Vector3(speed * Time.deltaTime, 0, 0));
 

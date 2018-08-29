@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -8,38 +9,39 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Rigidbody2D myBody;
 
-    private string[] colorNames;
+    private string[] colorsName;
     public string activeColor;
 
-    private bool canJump = true;
-
+    public GameController gameController;
+    
     void Awake()
     {
-        colorNames = new string[4];
-        colorNames[0] = "yellow";
-        colorNames[1] = "pink";
-        colorNames[2] = "cyan";
-        colorNames[3] = "purple";
+        colorsName = new string[4];
+        colorsName[0] = "yellow";
+        colorsName[1] = "pink";
+        colorsName[2] = "cyan";
+        colorsName[3] = "purple";
 
         activeColor = "";
     }
 
-	// Use this for initialization
-	void Start () {
-        int randomColor = Random.Range(0, colorNames.Length);
-        activeColor = colorNames[randomColor];
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (canJump)
+    void Start()
+    {
+        int randomColor = Random.Range(0, colorsName.Length);
+        activeColor = colorsName[randomColor];
+    }
+
+    void Update () {
+        if(transform.position.x != 50) { 
+
+		if(Input.GetMouseButtonDown(0)|| Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.Space))
-            {
-                myBody.velocity = Vector2.up * jump;
-            }
+            myBody.velocity = Vector2.up * jump;
         }
-	}
+
+        }
+    }
+
     public void GameOver()
     {
         StartCoroutine(Death());
@@ -47,23 +49,24 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D target)
     {
-        if(target.tag == "star")
+        if (target.tag == "star")
         {
+            ScoreController.instance.AddScore();
             Destroy(target.gameObject);
         }
-        if(target.tag == "color")
+
+        if (target.tag == "color")
         {
-            int randomColor = Random.Range(0, colorNames.Length);
-            activeColor = colorNames[randomColor];
+            int randomColor = Random.Range(0, colorsName.Length);
+            activeColor = colorsName[randomColor];
             Destroy(target.gameObject);
         }
     }
 
     IEnumerator Death()
     {
+        gameController.GameOver();
         transform.position = new Vector2(50, transform.position.y);
-        myBody.isKinematic = true;
-        canJump = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(10f);
     }
 }
